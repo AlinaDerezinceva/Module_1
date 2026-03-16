@@ -1,0 +1,353 @@
+//запустить новую сессию
+screen -S '`whoami`_part2'
+//создать log файл
+touch "$USER"_part.log
+
+//команды начинающиеся на ls
+compgen -c | grep "ls" >> "$USER"_part.log
+
+//вывод:
+ls
+else
+_shells
+_signals
+false
+lsblk
+lsattr
+inetutils-telnet
+lscpu
+zipdetails
+lsipc
+lsmod
+lsmem
+lspci
+grub-menulst2cfg
+lsinitramfs
+lsns
+lsusb
+lsof
+which.debianutils
+ls
+lslogins
+systemd-cgls
+false
+lsfd
+md5sum.textutils
+lslocks
+lsb_release
+lsirq
+lsblk
+lsattr
+inetutils-telnet
+lscpu
+zipdetails
+lsipc
+lsmod
+lsmem
+lspci
+grub-menulst2cfg
+lsinitramfs
+lsns
+lsusb
+lsof
+which.debianutils
+ls
+lslogins
+systemd-cgls
+false
+lsfd
+md5sum.textutils
+lslocks
+lsb_release
+lsirq
+
+//все переменные, которые начинаются с HIST
+compgen -v HIST >> "$USER"_part.log
+
+//вывод:
+HISTCMD
+HISTCONTROL
+HISTFILE
+HISTFILESIZE
+HISTSIZE
+
+//сколько команд может хранится в файле истории 
+echo $HISTFILESIZE
+
+//вывод:
+2000
+
+//имена файлов и каталогов из домашнего католога которые начинаются с точки
+ls -d ~/.*
+
+//вывод:
+/home/eltex-pg2-v16/.bash_history
+/home/eltex-pg2-v16/.bash_logout
+/home/eltex-pg2-v16/.bashrc
+/home/eltex-pg2-v16/.config
+/home/eltex-pg2-v16/.log
+/home/eltex-pg2-v16/.profile
+/home/eltex-pg2-v16/.txt
+/home/eltex-pg2-v16/.viminfo
+
+//настройка вывода даты выполнения команд
+export HISTTIMEFORMAT='%F %T '
+source ~/.bashrc
+history | tail -10
+
+//вывод:
+  216  2026-03-10 12:54:32 echo $HISTTIMEFORMAT
+  217  2026-03-10 12:56:04 echo "export HISTTIMEFORMAT='%F %T '" >> ~/.bashrc
+  218  2026-03-10 12:56:28 source ~/.bashrc~
+  219  2026-03-10 12:56:40 source ~/.bashrc
+  220  2026-03-10 12:56:50 echo $HISTTIMEFORMAT
+  221  2026-03-10 12:57:52 history | tail -10
+  222  2026-03-10 12:59:24 screen -r 2392990
+  223  2026-03-10 13:00:35 history | tail -10 >> “$USER”_part.log
+  224  2026-03-10 13:00:42 cat eltex-pg2-v16_part.log
+  225  2026-03-10 13:01:05 history | tail -10 >> "$USER"_part.log
+
+//команда date
+date >> "$USER"_part.log
+
+//вывод:
+Вт 10 мар 2026 13:14:03 +07
+
+//проверка есть ли команда в кеше
+history | tail -5 >> "$USER"_part.log
+
+//вывод:
+  229  2026-03-10 13:13:07 date
+  230  2026-03-10 13:14:03 date >> "$USER"_part.log
+  231  2026-03-10 13:14:06 cat eltex-pg2-v16_part.log
+  232  2026-03-10 13:20:04 tail ~/.bash_history
+  233  2026-03-10 13:24:47 history | tail -5 >> "$USER"_part.log
+
+//проверка есть ли команда в файле истории команд
+tail ~/.bash_history >> "$USER"_part.log
+
+//вывод
+screen -ls
+screen -r 2392990
+screen -ls
+cat eltex-pg2-v16_part.log
+screen -ls
+screen -r 2392990
+cat eltex-pg2-v16_part.log
+screen -r 2392990
+screen -ls
+ls
+
+//определить переменную PROMPT_COMMAND 
+echo "export PROMPT_COMMAND='history -a'" >> ~/.bashrc
+source ~/.bashrc
+
+//вводим команду для проверки
+whoami
+
+//вывод:
+eltex-pg2-v16
+
+//проверка появилась ли команда в файле истории
+tail ~/.bashrc_history >> "$USER"_part.log
+
+#1773124215
+echo "export PROMPT_COMMAND='history -a'" >> ~/.bashrc
+#1773124223
+source ~/.bashrc
+#1773124242
+tail ~/.bash_history
+#1773124354
+whoami >> "$USER"_part.log
+#1773124357
+cat eltex-pg2-v16_part.log
+
+//переменная DATE
+DATE=$(date +%Y-%m-%d)
+//проверка содержимого
+echo "DATE: $DATE"
+
+//вывод:
+DATE: 2026-03-10
+
+//переменная TIME
+TIME=$(date +%H:%M:%S)
+//проверка содержимого
+echo "TIME: $TIME"
+
+//вывод:
+TIME: 14:13:51
+
+//переменная DATE_TIME
+DATE_TIME="$DATE $TIME"
+//проверка содержимого
+echo "DATE_TIME: $DATE_TIME"
+
+//вывод:
+DATE_TIME: 2026-03-10 14:13:51
+
+//вывести имена файлов из каталогов /bin и /sbin содержащие хотя бы одну цифру 
+ls /bin /sbin | grep "[0-9]
+
+//вывод:
+addr2line
+b2sum
+base32
+base64
+bunzip2
+bzip2
+bzip2recover
+c89
+c89-gcc
+c99
+c99-gcc
+cpan5.36-x86_64-linux-gnu
+cpp-12
+diff3
+enc2xs
+gcc-12
+gcc-ar-12
+gcc-nm-12
+gcc-ranlib-12
+gcov-12
+gcov-dump-12
+gcov-tool-12
+grub-menulst2cfg
+grub-mkpasswd-pbkdf2
+grub-syslinux2cfg
+h2ph
+h2xs
+i386
+linux32
+linux64
+lto-dump-12
+md5sum
+md5sum.textutils
+pdb3
+pdb3.11
+perl5.36.0
+perl5.36-x86_64-linux-gnu
+ping4
+ping6
+pl2pm
+pod2html
+pod2man
+pod2text
+pod2usage
+py3clean
+py3compile
+py3versions
+pydoc3
+pydoc3.11
+pygettext3
+pygettext3.11
+python3
+python3.11
+sha1sum
+sha224sum
+sha256sum
+sha384sum
+sha512sum
+ssh-argv0
+systemd-id128
+traceroute6
+traceroute6.db
+x86_64
+x86_64-linux-gnu-addr2line
+x86_64-linux-gnu-ar
+x86_64-linux-gnu-as
+x86_64-linux-gnu-c++filt
+x86_64-linux-gnu-cpp
+x86_64-linux-gnu-cpp-12
+x86_64-linux-gnu-dwp
+x86_64-linux-gnu-elfedit
+x86_64-linux-gnu-gcc
+x86_64-linux-gnu-gcc-12
+x86_64-linux-gnu-gcc-ar
+x86_64-linux-gnu-gcc-ar-12
+x86_64-linux-gnu-gcc-nm
+x86_64-linux-gnu-gcc-nm-12
+x86_64-linux-gnu-gcc-ranlib
+x86_64-linux-gnu-gcc-ranlib-12
+x86_64-linux-gnu-gcov
+x86_64-linux-gnu-gcov-12
+x86_64-linux-gnu-gcov-dump
+x86_64-linux-gnu-gcov-dump-12
+x86_64-linux-gnu-gcov-tool
+x86_64-linux-gnu-gcov-tool-12
+x86_64-linux-gnu-gold
+x86_64-linux-gnu-gp-archive
+x86_64-linux-gnu-gp-collect-app
+x86_64-linux-gnu-gp-display-html
+x86_64-linux-gnu-gp-display-src
+x86_64-linux-gnu-gp-display-text
+x86_64-linux-gnu-gprof
+x86_64-linux-gnu-gprofng
+x86_64-linux-gnu-ld
+x86_64-linux-gnu-ld.bfd
+x86_64-linux-gnu-ld.gold
+x86_64-linux-gnu-lto-dump
+x86_64-linux-gnu-lto-dump-12
+x86_64-linux-gnu-nm
+x86_64-linux-gnu-objcopy
+x86_64-linux-gnu-objdump
+x86_64-linux-gnu-ranlib
+x86_64-linux-gnu-readelf
+x86_64-linux-gnu-size
+x86_64-linux-gnu-strings
+x86_64-linux-gnu-strip
+dumpe2fs
+e2freefrag
+e2fsck
+e2image
+e2label
+e2mmpstatus
+e2scrub
+e2scrub_all
+e2undo
+e4crypt
+e4defrag
+fsck.ext2
+fsck.ext3
+fsck.ext4
+killall5
+mke2fs
+mkfs.ext2
+mkfs.ext3
+mkfs.ext4
+resize2fs
+tune2fs
+update-grub2
+
+//изменить приглашение 
+echo "export PROMPT_COMMAND='"'"'PS1="\u@\h-$(date +%H:%M)>'"'"'' >> ~/.bashrc
+source ~/.bashrc
+echo $PROMPT_COMMAND
+
+//вывод:
+PS1="\u@\h-$(date +%H:%M)>"
+
+//сделать так чтобы в запускаемом интерпретаторе bash выводилось приглашение, установленное в родительском 
+grep "PROMPT_COMMAND" ~/.bashrc
+bash
+echo $PROMPT_COMMAND
+exit
+
+//одной командной строкой создать в домашнем каталоге подкаталоги для каждого месяца
+for i in {01..12}; do mkdir -p ~/$(date +%Y)-$i; done;
+//проверка
+ls -d ~/$(date +%Y)-*
+
+//вывод:
+/home/eltex-pg2-v16/2026-01
+/home/eltex-pg2-v16/2026-02
+/home/eltex-pg2-v16/2026-03
+/home/eltex-pg2-v16/2026-04
+/home/eltex-pg2-v16/2026-05
+/home/eltex-pg2-v16/2026-06
+/home/eltex-pg2-v16/2026-07
+/home/eltex-pg2-v16/2026-08
+/home/eltex-pg2-v16/2026-09
+/home/eltex-pg2-v16/2026-10
+/home/eltex-pg2-v16/2026-11
+/home/eltex-pg2-v16/2026-12

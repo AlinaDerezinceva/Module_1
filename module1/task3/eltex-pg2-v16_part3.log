@@ -1,0 +1,56 @@
+//1
+cd ~
+touch "$USER"_part3.log
+
+//2
+mkdir -p ~/D1/D2/D3
+
+//3
+touch ~/D1/D2/file.txt
+
+//4
+echo 'модуль 1 раздел 3 задание 4' > ~/D1/D2/file.txt
+
+//5
+cd ~/D1/D2/D3
+ln ~/D1/D2/file.txt hardlink.txt
+ln -s ~/D1/D2/file.txt softlink.txt
+
+//6
+ls -li ~/D1/D2/file.txt ~/D1/D2/D3/hardlink.txt ~/D1/D2/D3/softlink.txt
+
+110 -rw-r--r-- 2 eltex-pg2-v16 eltex-pg2-v16 47 мар 11 13:15 /home/eltex-pg2-v16/D1/D2/D3/hardlink.txt
+ 95 lrwxrwxrwx 1 eltex-pg2-v16 eltex-pg2-v16 34 мар 11 13:23 /home/eltex-pg2-v16/D1/D2/D3/softlink.txt -> /home/eltex-pg2-v16/D1/D2/file.txt
+110 -rw-r--r-- 2 eltex-pg2-v16 eltex-pg2-v16 47 мар 11 13:15 /home/eltex-pg2-v16/D1/D2/file.txt
+
+//7
+mv ~/D1/D2/file.txt ~/D1/
+ls -li ~/D1/file/txt
+
+//8
+cat ~/D1/D2/D3/hardlink.txt
+модуль 1 раздел 3 задание 4
+
+cat ~/D1/D2/D3/softlink.tx
+cat: /home/eltex-pg2-v16/D1/D2/D3/softlink.txt: No such file or directory
+
+//9
+rm -rf ~/D1/D2
+
+//10
+find / -type f -size +20M 2>/dev/null
+find / -type f -size +20M 2>/del/null > ~/files_20M.txt
+du -h $(< ~/files_20M.txt)
+cp ~/files_20M.txt ${USER}_part3_gt50M.log
+
+//11-12
+find ~ -type f -mtime -1
+
+//13
+which find
+
+//14
+file /usr/bin/find
+
+//15
+file /boot/initrd.img*
