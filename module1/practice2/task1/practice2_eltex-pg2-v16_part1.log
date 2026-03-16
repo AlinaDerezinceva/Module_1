@@ -1,0 +1,209 @@
+//1
+//создание ssh ключа
+ssh key-gen
+//2
+//копирование ключа
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@172.16.9.216
+//3
+ssh root@172.16.9.216
+//проверка ключа на сервере 1
+cat ~/.ssh/*.pub
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCCbOKxPkheBlixeRweJEmsjCz90J6a3lTl14uzxCS0Sh1loJeo8BUpagD2Vey8vrKa/p7vUxobDTErcc7eYi+Ci8xCwafZJ9Ymccf2haLCqBAta27PS8B1G72EJxN/nNO1iQASld6gJyyQphNNcwHEKHmVCgJQYCjQhhAQDxwN1QgFmEIkvSg7oyzil8GYZQJgw/RsovIShoU5MOpaDSSikDU7wCs5HqiVmRLTd3Eu5JKmi9NySx2DrFrmK11GgFVDMMVt3jpnoIU6E4RGa4OrcJGIt9eGvrMVA8qgaaeKkTv3/kg8aaX23gqMEwV9jYFLWCbw82Wq+7SXpGNJRWGRAOABJfGgnwPmrCeRyd71Y0GiHJXFtRXBviIopnD9UwzfOx/oRQk/sAc0PwDz5nXRNPBGC4RzevDGA7IYtRg0iRL5F78/zik1vrUCX5FJ08wc1cj+oaXGNetAHkRfonA0xEjltS9Pgm+1639Nbs642Zz7u1jbTA5ytDk0w3ACXcM= eltex-pg2-v16@eltex-2026-spring
+//проверка ключа на сервере 2
+cat ~/.ssh/authorized_keys
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCCbOKxPkheBlixeRweJEmsjCz90J6a3lTl14uzxCS0Sh1loJeo8BUpagD2Vey8vrKa/p7vUxobDTErcc7eYi+Ci8xCwafZJ9Ymccf2haLCqBAta27PS8B1G72EJxN/nNO1iQASld6gJyyQphNNcwHEKHmVCgJQYCjQhhAQDxwN1QgFmEIkvSg7oyzil8GYZQJgw/RsovIShoU5MOpaDSSikDU7wCs5HqiVmRLTd3Eu5JKmi9NySx2DrFrmK11GgFVDMMVt3jpnoIU6E4RGa4OrcJGIt9eGvrMVA8qgaaeKkTv3/kg8aaX23gqMEwV9jYFLWCbw82Wq+7SXpGNJRWGRAOABJfGgnwPmrCeRyd71Y0GiHJXFtRXBviIopnD9UwzfOx/oRQk/sAc0PwDz5nXRNPBGC4RzevDGA7IYtRg0iRL5F78/zik1vrUCX5FJ08wc1cj+oaXGNetAHkRfonA0xEjltS9Pgm+1639Nbs642Zz7u1jbTA5ytDk0w3ACXcM= eltex-pg2-v16@eltex-2026-spring
+//проверка прав доступа
+ls -la ~/.ssh/
+total 12
+drwx------ 2 root root 4096 Mar 12  2025 .
+drwx------ 4 root root 4096 Mar 13 06:55 ..
+-rw------- 1 root root  585 Mar 12 10:59 authorized_keys
+
+//4 создание пользователя user1 и создание пароля
+useradd -m -s /bin/bash user1
+passwd user1
+
+//5 создать пользователя user2 и user3
+adduser user2
+adduser user3
+
+//6 для пользователя user3 сменить shell на /usr/sbin/nologin 
+usermod -s /usr/sbin/nologin user3
+//выполнить вход при помощи утилиты su без доп.параметров
+su - user3
+
+This account is currently not available.
+
+//выполнить вход с явным указанием shell /bin/bash в параметрах su
+su -s /bin/bash user3
+
+exit
+
+//7 создать новую группу и добавить её для всех пользователей user* как дополнительную
+groupadd onegroup
+usermod -aG onegroup user1
+usermod -aG onegroup user2
+usermod -aG onegroup user3
+
+//посмотреть список групп всех пользователей
+id user1
+uid=1001(user1) gid=1001(user1) groups=1001(user1),1004(onegroup)
+
+id user2
+uid=1002(user2) gid=1002(user2) groups=1002(user2),100(users),1004(onegroup)
+
+id user3
+uid=1003(user3) gid=1003(user3) groups=1003(user3),100(users),1004(onegroup)
+
+//9 создайте каталог  /opt/share и назначить группу из предыдущего пункта его владельцем, установить на этот каталог бит SGID
+ 
+mkdir -p /opt/share
+
+chgrp onegroup /opt/share
+chmod g+s,g+rwx /opt/share
+
+//10 ДЛЯ user1 задать перманентно umask, снимающий права чтения для прочих
+echo "umask 027" >> /home/user1/.bashrc
+
+//11 создать пользователям новые файлы в каталоге /opt/share, удалить файлы созданные другими пользователями
+
+su - user1
+touch /opt/share/file_user1.txt
+exit
+
+su - user2
+touch /opt/share/file_user2.txt
+exit
+
+su -s /bin/bash user3
+touch /opt/share/file_user3.txt
+exit
+
+ls -la /opt/share
+
+total 8
+drwxrwsr-x 2 root  onegroup 4096 Mar 13 09:43 .
+drwxr-xr-x 3 root  root     4096 Mar 13 08:40 ..
+-rw-r----- 1 user1 onegroup    0 Mar 13 09:24 file_user1.txt
+-rw-rw-r-- 1 user2 onegroup    0 Mar 13 09:43 file_user2.txt
+-rw-rw-r-- 1 user3 onegroup    0 Mar 13 09:31 file_user3.txt
+
+//попытка удалить файл созданный другим пользователем
+Su – user1
+rm /opt/share/file_user2.txt
+exit
+
+ls -la /opt/share/
+
+total 8
+drwxrwsr-x 2 root  onegroup 4096 Mar 13 09:43 .
+drwxr-xr-x 3 root  root     4096 Mar 13 08:40 ..
+-rw-r----- 1 user1 onegroup    0 Mar 13 09:24 file_user1.txt
+-rw-rw-r-- 1 user3 onegroup    0 Mar 13 09:31 file_user3.txt
+
+//12 повторить предыдущий пункт, предварительно установив sticky bit
+chmod +t /opt/share
+
+su - user1 -c "touch /opt/share/file2_user1.txt"
+su - user2 -c "touch /opt/share/file2_user2.txt"
+su -s /bin/bash user3 -c "touch /opt/share/file2_user3.txt"
+
+ls -la /opt/share
+
+total 8
+drwxrwsr-t 2 root  onegroup 4096 Mar 13 10:08 .
+drwxr-xr-x 3 root  root     4096 Mar 13 08:40 ..
+-rw-rw-r-- 1 user1 onegroup    0 Mar 13 10:01 file2_user1.txt
+-rw-rw-r-- 1 user2 onegroup    0 Mar 13 10:08 file2_user2.txt
+-rw-rw-r-- 1 user3 onegroup    0 Mar 13 10:02 file2_user3.txt
+
+su - user1 -c "rm /opt/share/newfile_user2.txt"
+
+rm: cannot remove '/opt/share/file2_user2.txt': Operation not permitted
+
+//13 разрешить user1 выполнять привилегированную команду dmesg
+//при помощи команды sudo
+visudo
+//добавляем строчку в открывшемся редакторе
+user1 ALL=(ALL) NOPASSWD: /usr/bin/dmesg
+
+//при помощи скрипта на языке bash с установленным флагом SUID
+nano /usr/local/bin/dmesg_script.sh
+
+#!/bin/bash
+/usr/bin/dmasg
+
+chown root:root /usr/local/bin/dmesg_script.sh
+chmod 755 /usr/local/bin/dmesg_script.sh
+chmod u+s /usr/local/bin/dmesg_script.sh
+
+ls -la /usr/local/bin/dmesg_script.sh
+-rwsr-xr-x 1 root root 27 Mar 13 11:22 /usr/local/bin/dmesg_script.sh
+
+//14 для всех пользователей user* задайте время действия пароля - 10 дней
+chage -M 10 user1
+chage -M 10 user2
+chage -M 10 user3
+
+//15 редактируем файл 
+nano /etc/motd
+
+cat /etc/motd
+
+Алина Дережинцева
+
+//16 создать копию содержимого каталога /etc в каталог /root/etc_backup при помощи rsync 
+rsync -av /etc/ /root/etc_backup/
+
+//17 заархивируйте содержимое каталога /root/etc_backup архиватором tar
+tar -czvf /root/etc_backup.gz /root/etc_backup
+tar -cjvf /root/etc_backup.bz2 /root/etc_backup
+apt-get install p7zip-full -y
+7z a /root/etc_backup.7z /root/etc_backup
+
+ls -lh /root/etc_backup.*
+
+-rw-r--r-- 1 root root 4.5M Mar 13 12:46 /root/etc_backup.7z
+-rw-r--r-- 1 root root 553K Mar 13 12:44 /root/etc_backup.bz2
+-rw-r--r-- 1 root root 584K Mar 13 12:27 /root/etc_backup.gz
+
+//18 отредактируйте файл /etc/motd
+nano /etc/motd
+cat /etc/motd
+
+Алина Дережинцева
+13.03.2026 19:51
+
+//19 сравните содержимое архива, упакованного bzip2 с содержимым каталога /root/etc_backup
+rsync -av /etc/ /root/etc_backup/
+sending incremental file list
+
+sent 69,907 bytes  received 260 bytes  140,334.00 bytes/sec
+total size is 2,366,900  speedup is 33.73
+
+time rsync -av /etc/ /root/etc_backup
+rm /root/etc_backup.gz
+tar -czvf /root/etc_backup.gz -C / root/etc_backup
+
+mkdir -p /root/etc_backup_bzip2_test
+tar -xjvf /root/etc_backup.bz2 -C /root/etc_backup_bzip2_test
+diff -rq /root/etc_backup_bzip2_test/root/etc backup /root/etc_backup
+
+Files /root/etc_backup_bzip2_test/root/etc_backup/motd and /root/etc_backup/motd differ
+
+//20 Распакуйте архивы etc_backup, упакованные gzip и 7zip в каталоги /root/etc_backup_gzip и
+/root/etc_backup_7zip, сравните программой diff файлы motd в этих каталогах.
+
+mkdir -p /root/etc_backup_gzip
+mkdir -p /root/etc_backup_7zip
+tar -xzvf /root/etc_backup.gz -C /root/etc_backup_gzip
+7z x /root/etc_backup.7z -o/root/etc_backup_7zip
+
+diff -u /root/etc_backup_gzip/root/etc_backup/motd /root/etc_backup_7zip/etc_backup/motd
+--- /root/etc_backup_gzip/root/etc_backup/motd	2026-03-13 12:51:48.000000000 +0000
++++ /root/etc_backup_7zip/etc_backup/motd	2026-03-13 12:01:23.304317300 +0000
+@@ -1,2 +1 @@
+ Алина Дережинцева
+-13.03.2026 19:51

@@ -1,0 +1,65 @@
+//2 Установите непосредственно программу git и набор утилит для управления github из командной строки
+apt update
+apt install git gh
+
+//3 Установите параметры git в соответствии с вашими учетными данными:
+
+git config --global user.name "AlinaDerezinceva"
+git config --global user.email "aderezinceva@gmail.com"
+git config --global init.defaultBranch main
+
+//4 Создайте ключ ssh:
+ssh-keygen -t ed25519 -f ~/.ssh/AlinaDerezinceva
+cat .ssh/AlinaDerezinceva.pub
+
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMoaUZSfKHHndxgETa5eCZslhuuW41XVmGr/8dyE3TmG root@eltex-practice2-pg2-v16
+
+//5 Подключите этот комьютер к github:
+gh auth login
+
+//6
+gh auth setup-git --hostname github.com
+
+//7
+gh auth status
+
+github.com
+  ✓ Logged in to github.com account AlinaDerezinceva (/root/.config/gh/hosts.yml)
+  - Active account: true
+  - Git operations protocol: ssh
+  - Token: gho_************************************
+  - Token scopes: 'admin:public_key', 'gist', 'read:org', 'repo'
+//8
+gh repo create –public
+
+Created repository AlinaDerezinceva/Module_1 on GitHub
+  https://github.com/AlinaDerezinceva/Module_1
+
+//9
+echo "# Репозиторий для практик Модуля 1 Школы Eltex" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/AlinaDerezinceva/Module_1
+git status
+git push -u origin main
+mkdir -p module1/task1
+mkdir module1/task2
+mkdir module1/task3
+git add .
+git status
+git commit -m "практика 1"
+git push
+
+//10
+mkdir ~/Module_1_clone && cd ~/Module_1_clone
+git clone https://github.com/AlinaDerezinceva/Module_1.git
+AlinaDerezinceva/Module_1.git
+Cloning into 'Module_1'...
+remote: Enumerating objects: 12, done.
+remote: Counting objects: 100% (12/12), done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 12 (delta 0), reused 12 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (12/12), done.
